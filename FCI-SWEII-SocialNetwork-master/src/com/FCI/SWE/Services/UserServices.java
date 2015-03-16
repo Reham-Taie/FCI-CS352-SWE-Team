@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -21,6 +22,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.mvc.Viewable;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -105,6 +107,41 @@ public class UserServices {
 
 	}
 	@POST
+	@Path("/searchUserService")
+	public String searchUserService(@FormParam("sname") String sname)
+	{
+		Vector <UserEntity>users=UserEntity.searchUser(sname);
+		JSONArray returnedJson = new JSONArray();
+	for(UserEntity user:users)	
+	{
+		JSONObject object=new JSONObject();
+		object.put("id", user.getId());
+		object.put("Name", user.getName());
+		object.put("Email", user.getEmail());
+		returnedJson.add(object);
+		
+	}
+	return returnedJson.toJSONString();
+		/*UserEntity.searchUser(sname);
+		if(UserEntity.searchUser(sname)==true)
+		{
+			object.put("status"," Found");
+			
+		}
+		else
+		{
+			object.put("status"," Not Found");
+		}
+		
+		
+		
+		
+
+		return object.toString();*/
+	
+
+	}
+	@POST
 	@Path("/signoutService")
 	public String signoutService() {
 		User.setCurrentActiveUser();
@@ -130,10 +167,10 @@ public class UserServices {
 	
 	@POST
 	@Path("/acceptrequest")
-	public String acceptrequestService()
+	public String acceptrequestService(@FormParam("semail") String semail)
 			{
 		JSONObject object = new JSONObject();
-		UserEntity.getrequest();
+		UserEntity.getrequest(semail);
 		
      object.put("status"," accept");
 		return object.toString();

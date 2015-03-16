@@ -13,18 +13,9 @@
 <p> and "http://fci-swe-apps.appspot.com/rest/LoginService --- {requires: uname,  password}" </p>
 <p> you should implement sendFriendRequest service and addFriend service
 
-<form action="/social/sendrequest" method="post"> 
- Enter the name of your friend: <input type="text" name="femail" /> <br>
-<input type="submit" value="sendrequest">
-</form> 
 
-<br><form action="/social/acceptrequest" method="post"> 
-
-<input type="submit" value="acceptrequest">
-</form> </br>
-
-<form action="/social/signout" method="post">  <br>
-<br> <input type="submit" value="Signout"> 
+<form action="/social/option" method="post">  <br>
+<br> <input type="submit" value="option"> 
 </form> 
 
 </body>

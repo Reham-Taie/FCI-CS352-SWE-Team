@@ -1,16 +1,9 @@
 package com.FCI.SWE.Controller;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -21,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.mvc.Viewable;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -48,27 +42,28 @@ public class UserController {
 	 */
 	@POST
 	@Path("/doSearch")
-	public Response usersList(@FormParam("uname") String uname){
+	public Response usersList(@FormParam("uname") String uname) {
 		System.out.println(uname);
-		String serviceUrl = "http://localhost/rest/SearchService";
+		String serviceUrl = "http://swe2-project-application.appspot.com/rest/SearchService";
 		String urlParameters = "uname=" + uname;
 		String retJson = Connection.connect(serviceUrl, urlParameters, "POST",
 				"application/x-www-form-urlencoded;charset=UTF-8");
-		
+
 		return null;
 	}
+
 	@GET
 	@Path("/signup")
 	public Response signUp() {
 		return Response.ok(new Viewable("/jsp/register")).build();
 	}
 
-	
 	@GET
 	@Path("/search")
-	public Response search(){
+	public Response search() {
 		return Response.ok(new Viewable("/jsp/search")).build();
 	}
+
 	/**
 	 * Action function to render home page of application, home page contains
 	 * only signup and login buttons
@@ -112,7 +107,7 @@ public class UserController {
 	public String response(@FormParam("uname") String uname,
 			@FormParam("email") String email, @FormParam("password") String pass) {
 
-		String serviceUrl = "http://localhost:8888/rest/RegistrationService";
+		String serviceUrl = "http://swe2-project-application.appspot.com/rest/RegistrationService";
 		String urlParameters = "uname=" + uname + "&email=" + email
 				+ "&password=" + pass;
 		String retJson = Connection.connect(serviceUrl, urlParameters, "POST",
@@ -157,7 +152,7 @@ public class UserController {
 		String urlParameters = "uname=" + uname + "&password=" + pass;
 
 		String retJson = Connection.connect(
-				"http://localhost:8888/rest/LoginService", urlParameters,
+				"http://swe2-project-application.appspot.com/rest/LoginService", urlParameters,
 				"POST", "application/x-www-form-urlencoded;charset=UTF-8");
 
 		JSONParser parser = new JSONParser();
@@ -184,40 +179,97 @@ public class UserController {
 		return null;
 
 	}
+
 	@POST
 	@Path("/signout")
 	@Produces("text/html")
 	public Response signout(){
 		return Response.ok(new Viewable("/jsp/entryPoint")).build();
 	}
-	
+
 	@POST
 	@Path("/sendrequest")
 	@Produces("text/html")
-	public Response sendrequest(@FormParam("femail") String femail){
-		String serviceUrl = "http://localhost:8888/rest/sendrequest";
-		String urlParameters = "femail=" + femail ;
+	public Response sendrequest(@FormParam("femail") String femail) {
+		String serviceUrl = "http://swe2-project-application.appspot.com/rest/sendrequest";
+		String urlParameters = "femail=" + femail;
 		String retJson = Connection.connect(serviceUrl, urlParameters, "POST",
 				"application/x-www-form-urlencoded;charset=UTF-8");
-		return Response.ok(new Viewable("/jsp/home")).build();
+		return Response.ok(new Viewable("/jsp/send")).build();
 	}
-	
+
 	@POST
 	@Path("/acceptrequest")
 	@Produces("text/html")
-	public Response acceptrequest(){
-		String serviceUrl = "http://localhost:8888/rest/acceptrequest";
-	   
-		String retJson = Connection.connect(serviceUrl ,"", "POST",
+	public Response acceptrequest(@FormParam("semail") String semail) {
+		String serviceUrl = "http://swe2-project-application.appspot.com/rest/acceptrequest";
+		String urlParameters = "semail=" + semail;
+		String retJson = Connection.connect(serviceUrl, urlParameters , "POST",
 				"application/x-www-form-urlencoded;charset=UTF-8");
 		return Response.ok(new Viewable("/jsp/accept")).build();
 	}
-	
+
 	@POST
 	@Path("/accept")
 	@Produces("text/html")
-	public Response accept(){
+	public Response accept() {
 		return Response.ok(new Viewable("/jsp/home")).build();
+	}
+
+	@POST
+	@Path("/option")
+	@Produces("text/html")
+	public Response option() {
+		return Response.ok(new Viewable("/jsp/option")).build();
+	}
+
+	@POST
+	@Path("/requests")
+	@Produces("text/html")
+	public Response requests() {
+		return Response.ok(new Viewable("/jsp/sendrequest")).build();
+	}
+
+	@POST
+	@Path("/viewsearch")
+	@Produces("text/html")
+	public Response viewsearch() {
+		return Response.ok(new Viewable("/jsp/enterName")).build();
+	}
+	
+	@POST
+	@Path("/searchUser")
+	@Produces("text/html")
+	public Response searchUser(@FormParam("sname") String sname) {
+		
+		String serviceUrl = "http://swe2-project-application.appspot.com/rest/searchUserService";
+		String urlParameters = "sname=" + sname;
+
+		String retJson = Connection.connect( serviceUrl, urlParameters, "POST",
+				"application/x-www-form-urlencoded;charset=UTF-8");
+		Map<String, Vector<User>> passedUsers = new HashMap<String, Vector<User>>();
+		JSONParser parser = new JSONParser();
+		Object obj;
+		try {
+			JSONArray array = (JSONArray) parser.parse(retJson);
+			Vector<User> users = new Vector<User>();
+			for (int i = 0; i < array.size(); i++) {
+
+				JSONObject object;
+				object = (JSONObject) array.get(i);
+				users.add(User.parseUserInfo( object.toJSONString() )  );
+			}
+
+			passedUsers.put("userList", users);
+			return Response.ok(new Viewable("/jsp/showUsers", passedUsers))
+					.build();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
+
 	}
 
 }

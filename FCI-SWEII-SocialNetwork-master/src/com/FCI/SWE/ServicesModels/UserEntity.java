@@ -2,6 +2,7 @@ package com.FCI.SWE.ServicesModels;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -102,6 +103,27 @@ public class UserEntity {
 
 		return null;
 	}
+	public static Vector<UserEntity> searchUser(String sname) {
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+
+		Query gaeQuery = new Query("users");
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		Vector<UserEntity>returnedUsers=new Vector<UserEntity>();
+		for (Entity entity : pq.asIterable()) {
+			String currentName=entity.getProperty("name").toString() ;
+			if (currentName.contains(sname))
+			{
+				UserEntity user=new UserEntity(entity.getProperty("name").toString() , 
+						entity.getProperty("email").toString(),
+						entity.getProperty("password").toString());
+				user.setId(entity.getKey().getId());
+				returnedUsers.add(user);
+			}
+		}
+	
+		return returnedUsers;
+	}
 
 	/**
 	 * This method will be used to save user object in datastore
@@ -136,6 +158,7 @@ public class UserEntity {
 
 	}
 	
+	
 	public static void friend(String friendEmail) {
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
@@ -159,21 +182,24 @@ public class UserEntity {
 	}
 	
 	
-	public static UserEntity getrequest() {
+	public static UserEntity getrequest(String semail) {
 		String myEmail=User.getCurrentActiveUser().getEmail().toString();
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
-
+		System.out.println("semail = " + semail);
+		System.out.println("myemail " + myEmail);
+		
 		Query gaeQuery = new Query("friends");
 		PreparedQuery pq = datastore.prepare(gaeQuery);
 		for (Entity entity : pq.asIterable()) {
-			if (entity.getProperty("friendEmail").toString().equals(myEmail)) {
+			if (entity.getProperty("friendEmail").toString().equals(myEmail) && entity.getProperty("myEmail").toString().equals(semail) ) {
 				
 				entity.setProperty("status", "accept");
 						
 				datastore.put(entity);
 				
 			}
+			System.out.println("friendemail" + entity.getProperty("friendEmail").toString());
 		}
 
 		return null;
