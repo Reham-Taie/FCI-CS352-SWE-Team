@@ -7,11 +7,18 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form action="/social/acceptrequest" method="post">
-Enter Friend Email : <input type="text" name="semail" /> <br>
- <br>
-  <input type="submit" value="accept">
-  
+<form action="/social/msgcheck" method="post">
+  Conversation ID : <input type="text" name="ID" /> <br>
+   Message: <input type="text" name="Message" /> <br>
+  <br> <input type="submit" value="Send"> 
   </form>
+  
+  
+  
+  
+  <br><form action="/social/back" method="post">
+<br> <input type="submit" value="Back"> 
+</form> </br>
+  
 </body>
 </html>

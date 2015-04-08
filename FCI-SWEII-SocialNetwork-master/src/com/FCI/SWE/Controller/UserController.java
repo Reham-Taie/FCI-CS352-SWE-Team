@@ -1,6 +1,5 @@
 package com.FCI.SWE.Controller;
 
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -44,7 +43,7 @@ public class UserController {
 	@Path("/doSearch")
 	public Response usersList(@FormParam("uname") String uname) {
 		System.out.println(uname);
-		String serviceUrl = "http://swe2-project-application.appspot.com/rest/SearchService";
+		String serviceUrl = "http://localhost:8888/rest/SearchService";
 		String urlParameters = "uname=" + uname;
 		String retJson = Connection.connect(serviceUrl, urlParameters, "POST",
 				"application/x-www-form-urlencoded;charset=UTF-8");
@@ -70,6 +69,7 @@ public class UserController {
 	 * 
 	 * @return enty point page (Home page of this application)
 	 */
+
 	@GET
 	@Path("/")
 	public Response index() {
@@ -101,13 +101,27 @@ public class UserController {
 	 *            provided user password
 	 * @return Status string
 	 */
+
+	@GET
+	@Path("/convers")
+	public Response conv() {
+		return Response.ok(new Viewable("/jsp/conversation")).build();
+	}
+
+	/**
+	 * 
+	 * @param uname
+	 * @param email
+	 * @param pass
+	 * @return
+	 */
 	@POST
 	@Path("/response")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String response(@FormParam("uname") String uname,
 			@FormParam("email") String email, @FormParam("password") String pass) {
 
-		String serviceUrl = "http://swe2-project-application.appspot.com/rest/RegistrationService";
+		String serviceUrl = "http://localhost:8888/rest/RegistrationService";
 		String urlParameters = "uname=" + uname + "&email=" + email
 				+ "&password=" + pass;
 		String retJson = Connection.connect(serviceUrl, urlParameters, "POST",
@@ -152,7 +166,7 @@ public class UserController {
 		String urlParameters = "uname=" + uname + "&password=" + pass;
 
 		String retJson = Connection.connect(
-				"http://swe2-project-application.appspot.com/rest/LoginService", urlParameters,
+				"http://localhost:8888/rest/LoginService", urlParameters,
 				"POST", "application/x-www-form-urlencoded;charset=UTF-8");
 
 		JSONParser parser = new JSONParser();
@@ -180,35 +194,53 @@ public class UserController {
 
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@POST
 	@Path("/signout")
 	@Produces("text/html")
-	public Response signout(){
+	public Response signout() {
 		return Response.ok(new Viewable("/jsp/entryPoint")).build();
 	}
 
+	/**
+	 * 
+	 * @param femail
+	 * @return
+	 */
 	@POST
 	@Path("/sendrequest")
 	@Produces("text/html")
 	public Response sendrequest(@FormParam("femail") String femail) {
-		String serviceUrl = "http://swe2-project-application.appspot.com/rest/sendrequest";
+		String serviceUrl = "http://localhost:8888/rest/sendrequest";
 		String urlParameters = "femail=" + femail;
 		String retJson = Connection.connect(serviceUrl, urlParameters, "POST",
 				"application/x-www-form-urlencoded;charset=UTF-8");
 		return Response.ok(new Viewable("/jsp/send")).build();
 	}
 
+	/**
+	 * 
+	 * @param semail
+	 * @return
+	 */
 	@POST
 	@Path("/acceptrequest")
 	@Produces("text/html")
 	public Response acceptrequest(@FormParam("semail") String semail) {
-		String serviceUrl = "http://swe2-project-application.appspot.com/rest/acceptrequest";
+		String serviceUrl = "http://localhost:8888/rest/acceptrequest";
 		String urlParameters = "semail=" + semail;
-		String retJson = Connection.connect(serviceUrl, urlParameters , "POST",
+		String retJson = Connection.connect(serviceUrl, urlParameters, "POST",
 				"application/x-www-form-urlencoded;charset=UTF-8");
 		return Response.ok(new Viewable("/jsp/accept")).build();
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@POST
 	@Path("/accept")
 	@Produces("text/html")
@@ -216,6 +248,10 @@ public class UserController {
 		return Response.ok(new Viewable("/jsp/home")).build();
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@POST
 	@Path("/option")
 	@Produces("text/html")
@@ -230,46 +266,257 @@ public class UserController {
 		return Response.ok(new Viewable("/jsp/sendrequest")).build();
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@POST
 	@Path("/viewsearch")
 	@Produces("text/html")
 	public Response viewsearch() {
 		return Response.ok(new Viewable("/jsp/enterName")).build();
 	}
-	
+
+	/**
+	 * 
+	 */
+	/*
+	 * @POST
+	 * 
+	 * @Path("/searchUser")
+	 * 
+	 * @Produces("text/html") public Response searchUser(@FormParam("sname")
+	 * String sname) {
+	 * 
+	 * String serviceUrl = "http://localhost:8888/rest/searchUserService";
+	 * String urlParameters = "sname=" + sname;
+	 * 
+	 * String retJson = Connection.connect( serviceUrl, urlParameters, "POST",
+	 * "application/x-www-form-urlencoded;charset=UTF-8"); Map<String,
+	 * Vector<User>> passedUsers = new HashMap<String, Vector<User>>();
+	 * JSONParser parser = new JSONParser(); Object obj; try { JSONArray array =
+	 * (JSONArray) parser.parse(retJson); Vector<User> users = new
+	 * Vector<User>(); for (int i = 0; i < array.size(); i++) {
+	 * 
+	 * JSONObject object; object = (JSONObject) array.get(i);
+	 * users.add(User.parseUserInfo( object.toJSONString() ) ); }
+	 * 
+	 * passedUsers.put("userList", users); return Response.ok(new
+	 * Viewable("/jsp/showUsers", passedUsers)) .build(); } catch
+	 * (ParseException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); }
+	 * 
+	 * return null;
+	 * 
+	 * }
+	 */
+
+	/**
+	 * 
+	 * @return
+	 */
+	@GET
+	@Path("/message")
+	public Response message() {
+		return Response.ok(new Viewable("/jsp/sendmessage")).build();
+	}
+
 	@POST
-	@Path("/searchUser")
+	@Path("/Sendmessage")
 	@Produces("text/html")
-	public Response searchUser(@FormParam("sname") String sname) {
-		
-		String serviceUrl = "http://swe2-project-application.appspot.com/rest/searchUserService";
-		String urlParameters = "sname=" + sname;
-
-		String retJson = Connection.connect( serviceUrl, urlParameters, "POST",
+	public String Sendmessage(@FormParam("uname") String uname,
+			@FormParam("message") String message) {
+		String serviceUrl = "http://localhost:8888/rest/Messageservice";
+		String urlParameter = "Sender=" + User.getCurrentActiveUser().getName()
+				+ "&Reciever=" + uname + "&message= " + message;
+		String retJson2 = Connection.connect(serviceUrl, urlParameter, "POST",
 				"application/x-www-form-urlencoded;charset=UTF-8");
-		Map<String, Vector<User>> passedUsers = new HashMap<String, Vector<User>>();
-		JSONParser parser = new JSONParser();
-		Object obj;
-		try {
-			JSONArray array = (JSONArray) parser.parse(retJson);
-			Vector<User> users = new Vector<User>();
-			for (int i = 0; i < array.size(); i++) {
+		JSONParser parser2 = new JSONParser();
+		Object obj2;
 
-				JSONObject object;
-				object = (JSONObject) array.get(i);
-				users.add(User.parseUserInfo( object.toJSONString() )  );
+		try {
+			// System.out.println(retJson);
+			obj2 = parser2.parse(retJson2);
+			JSONObject object2 = (JSONObject) obj2;
+			if (object2.get("Status").equals("OK")) {
+				// System.out.println("3");
+				return "Message has been sent Successfully";
 			}
 
-			passedUsers.put("userList", users);
-			return Response.ok(new Viewable("/jsp/showUsers", passedUsers))
-					.build();
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return null;
-
 	}
+
+	// ------------------------------------------------------------------------------------------------------------
+	/**
+	 * 
+	 * @return
+	 */
+	@GET
+	@Path("/chatmessage")
+	public Response chatmessage() {
+		return Response.ok(new Viewable("/jsp/Groupmessage.jsp")).build();
+	}
+
+	/* /////////////////////////// */
+	/**
+	 * 
+	 * @param ID
+	 * @param Name
+	 * @return
+	 */
+	@POST
+	@Path("/conversation")
+	@Produces("text/html")
+	public Response conversation(@FormParam("ID") String ID,
+			@FormParam("Name") String Name) {
+		String serviceUrl = "http://localhost:8888/rest/conversationService";
+		String urlParameters = "ID=" + ID + "&Name=" + Name;
+		String retJson = Connection.connect(serviceUrl, urlParameters, "POST",
+				"application/x-www-form-urlencoded;charset=UTF-8");
+		return Response.ok(new Viewable("/jsp/conversation")).build();
+	}
+
+	/*
+	 * @POST
+	 * 
+	 * @Path("/msgcheck")
+	 * 
+	 * @Produces("text/html") public Response msgcontent(@FormParam("ID") String
+	 * ID,@FormParam("Message") String Message) { String serviceUrl =
+	 * "http://localhost:8888/rest/msgcontentService"; String urlParameters
+	 * ="ID=" + ID + "&Message=" + Message; String retJson =
+	 * Connection.connect(serviceUrl, urlParameters, "POST",
+	 * "application/x-www-form-urlencoded;charset=UTF-8"); return
+	 * Response.ok(new Viewable("/jsp/messagecontent")).build(); }
+	 */
+
+	/**
+	 * 
+	 * @param ID
+	 * @param Message
+	 * @return
+	 */
+	@POST
+	@Path("/msgcheck")
+	@Produces("text/html")
+	public Response msgcontent(@FormParam("ID") String ID,
+			@FormParam("Message") String Message) {
+		String serviceUrl = "http://localhost:8888/rest/msgcheckService";
+		String urlParameters = "ID=" + ID + "&Message=" + Message;
+		String retJson = Connection.connect(serviceUrl, urlParameters, "POST",
+				"application/x-www-form-urlencoded;charset=UTF-8");
+		return Response.ok(new Viewable("/jsp/home")).build();
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	@POST
+	@Path("/conversationpage")
+	public Response conversationpage() {
+		return Response.ok(new Viewable("/jsp/conversation")).build();
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	@POST
+	@Path("/back")
+	public Response back() {
+		return Response.ok(new Viewable("/jsp/home")).build();
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	@POST
+	@Path("/msg")
+	public Response msg() {
+		return Response.ok(new Viewable("/jsp/msgID")).build();
+	}
+
+	// -------------------------------------------------------------------------------------------------------
+	/**
+	 * 
+	 * @param uname
+	 * @param message
+	 * @param Groupid
+	 * @return
+	 */
+	@POST
+	@Path("/Groupmessage")
+	@Produces("text/html")
+	public String Groupmessage(@FormParam("uname") String uname,
+			@FormParam("message") String message,
+			@FormParam("Groupid") String Groupid) {
+		String serviceUrl = "http://localhost:8888/rest/GroupmessageService";
+		String urlParameter = "Sender=" + User.getCurrentActiveUser().getName()
+				+ "&Groupid=" + Groupid + "&message= " + message;
+		String retJson2 = Connection.connect(serviceUrl, urlParameter, "POST",
+				"application/x-www-form-urlencoded;charset=UTF-8");
+		JSONParser parser2 = new JSONParser();
+		Object obj2;
+
+		try {
+			// System.out.println(retJson);
+			obj2 = parser2.parse(retJson2);
+			JSONObject object2 = (JSONObject) obj2;
+			if (object2.get("Status").equals("OK")) {
+				// System.out.println("3");
+				return "Message has been sent Successfully";
+			}
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	// -----------------------------------------------------------------------------------------------------------
+	/**
+	 * 
+	 * @param uname
+	 * @param message
+	 * @param Groupid
+	 * @return
+	 */
+	@POST
+	@Path("/Groupmessagechat")
+	@Produces("text/html")
+	public String Groupmessagechat(@FormParam("uname") String uname,
+			@FormParam("message") String message,
+			@FormParam("Groupid") String Groupid) {
+		String serviceUrl = "http://localhost:8888/rest/GroupmessageService";
+		String urlParameter = "Sender=" + User.getCurrentActiveUser().getName()
+				+ "&Groupid=" + Groupid + "&message= " + message;
+		String retJson2 = Connection.connect(serviceUrl, urlParameter, "POST",
+				"application/x-www-form-urlencoded;charset=UTF-8");
+		JSONParser parser2 = new JSONParser();
+		Object obj2;
+
+		try {
+			// System.out.println(retJson);
+			obj2 = parser2.parse(retJson2);
+			JSONObject object2 = (JSONObject) obj2;
+			if (object2.get("Status").equals("OK")) {
+				// System.out.println("3");
+				return "Message has been sent Successfully";
+			}
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	// -------------------------------------------------------------------------------------------------------------
 
 }

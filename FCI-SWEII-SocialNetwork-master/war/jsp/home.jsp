@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+
 <p> Welcome b2a ya ${it.name} </p>
 <p> This is should be user home page </p>
 <p> Current implemented services "http://fci-swe-apps.appspot.com/rest/RegistrationService --- {requires: uname, email, password}" </p>
@@ -17,6 +18,15 @@
 <form action="/social/option" method="post">  <br>
 <br> <input type="submit" value="option"> 
 </form> 
-
+<form action="/social/conversationpage" method="post">  <br>
+<br> <input type="submit" value="Create Conversation"> 
+</form> 
+////////////////////////////
+ 
+ <P>link to send a friend message:</P><a href = "/social/message">Send Message to user</a>
+  
+   <P>link to send a group message:</P><a href = "/social/chatmessage">Send Group Message</a>
 </body>
 </html>
+
+

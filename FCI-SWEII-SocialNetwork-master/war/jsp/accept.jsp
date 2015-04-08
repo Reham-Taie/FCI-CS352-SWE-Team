@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1><<<<<<<<<<<<<<<  Friend request is  Accepted Successfully >>>>>>>>>>>>>>>>>>>></h1>
+All Friends are Accepted Successfully :D :D :D :D 
 
 <form action="/social/accept" method="post"> 
    <br>

@@ -7,13 +7,16 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>          <<<<<<<<<<<<<<< User is Found >>>>>>>>>>>></h1>
+<form action="/social/msgcontent" method="post">
   
- <form action="/social/searchUser" method="post"> 
-   <br>
-<input type="submit" value="Back">
-</form> 
-
+  Message: <input type="text" name="Message" /> <br>
+  <input type="submit" value="Send">
+  </form>
+  
+  
+  <br><form action="/social/back" method="post">
+<br> <input type="submit" value="Back"> 
+</form> </br>
   
 </body>
 </html>

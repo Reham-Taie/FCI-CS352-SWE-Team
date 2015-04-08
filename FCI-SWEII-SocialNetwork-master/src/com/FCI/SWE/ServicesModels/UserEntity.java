@@ -50,12 +50,12 @@ public class UserEntity {
 		this.email = email;
 		this.password = password;
 	}
-	
-	private void setId(long id){
+
+	private void setId(long id) {
 		this.id = id;
 	}
-	
-	public long getId(){
+
+	public long getId() {
 		return id;
 	}
 
@@ -71,7 +71,6 @@ public class UserEntity {
 		return password;
 	}
 
-	
 	/**
 	 * 
 	 * This static method will form UserEntity class using user name and
@@ -103,25 +102,30 @@ public class UserEntity {
 
 		return null;
 	}
+
+	/**
+	 * 
+	 * @param sname
+	 * @return
+	 */
 	public static Vector<UserEntity> searchUser(String sname) {
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
 
 		Query gaeQuery = new Query("users");
 		PreparedQuery pq = datastore.prepare(gaeQuery);
-		Vector<UserEntity>returnedUsers=new Vector<UserEntity>();
+		Vector<UserEntity> returnedUsers = new Vector<UserEntity>();
 		for (Entity entity : pq.asIterable()) {
-			String currentName=entity.getProperty("name").toString() ;
-			if (currentName.contains(sname))
-			{
-				UserEntity user=new UserEntity(entity.getProperty("name").toString() , 
-						entity.getProperty("email").toString(),
+			String currentName = entity.getProperty("name").toString();
+			if (currentName.contains(sname)) {
+				UserEntity user = new UserEntity(entity.getProperty("name")
+						.toString(), entity.getProperty("email").toString(),
 						entity.getProperty("password").toString());
 				user.setId(entity.getKey().getId());
 				returnedUsers.add(user);
 			}
 		}
-	
+
 		return returnedUsers;
 	}
 
@@ -138,71 +142,283 @@ public class UserEntity {
 		PreparedQuery pq = datastore.prepare(gaeQuery);
 		List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
 		System.out.println("Size = " + list.size());
-		
-		try {
-		Entity employee = new Entity("users", list.size() + 2);
 
-		employee.setProperty("name", this.name);
-		employee.setProperty("email", this.email);
-		employee.setProperty("password", this.password);
-		
-		datastore.put(employee);
-		txn.commit();
-		}
-		finally{
+		try {
+			Entity employee = new Entity("users", list.size() + 2);
+
+			employee.setProperty("name", this.name);
+			employee.setProperty("email", this.email);
+			employee.setProperty("password", this.password);
+
+			datastore.put(employee);
+			txn.commit();
+		} finally {
 			if (txn.isActive()) {
-		        txn.rollback();
-		    }
+				txn.rollback();
+			}
 		}
 		return true;
 
 	}
-	
-	
+
+	/**
+	 * 
+	 * @param friendEmail
+	 */
 	public static void friend(String friendEmail) {
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
-		
+
 		Query gaeQuery = new Query("friends");
 		PreparedQuery pq = datastore.prepare(gaeQuery);
 		List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
-		
-		
+
 		Entity employee = new Entity("friends", list.size() + 2);
-		employee.setProperty("friendEmail",friendEmail );
-		
-		employee.setProperty("myEmail", User.getCurrentActiveUser().getEmail().toString());
+		employee.setProperty("friendEmail", friendEmail);
+
+		employee.setProperty("myEmail", User.getCurrentActiveUser().getEmail()
+				.toString());
 		employee.setProperty("status", "false");
-		
-		
+
 		datastore.put(employee);
-		
-		
-		//return true;
+
+		// return true;
 	}
-	
-	
+
+	/**
+	 * 
+	 * @param semail
+	 * @return
+	 */
 	public static UserEntity getrequest(String semail) {
-		String myEmail=User.getCurrentActiveUser().getEmail().toString();
+		String myEmail = User.getCurrentActiveUser().getEmail().toString();
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
-		System.out.println("semail = " + semail);
-		System.out.println("myemail " + myEmail);
-		
+
 		Query gaeQuery = new Query("friends");
 		PreparedQuery pq = datastore.prepare(gaeQuery);
 		for (Entity entity : pq.asIterable()) {
-			if (entity.getProperty("friendEmail").toString().equals(myEmail) && entity.getProperty("myEmail").toString().equals(semail) ) {
-				
+			if (entity.getProperty("friendEmail").toString().equals(myEmail)
+					&& entity.getProperty("myEmail").toString().equals(semail)) {
+
 				entity.setProperty("status", "accept");
-						
+
 				datastore.put(entity);
-				
+
 			}
-			System.out.println("friendemail" + entity.getProperty("friendEmail").toString());
+			System.out.println("friendemail"
+					+ entity.getProperty("friendEmail").toString());
 		}
 
 		return null;
+	}
+
+	// /////////////////////////////////////////////
+	/**
+	 * 
+	 * @return
+	 */
+	public Boolean savemessage() {
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+		Transaction txn = datastore.beginTransaction();
+		Query gaeQuery = new Query("Message");
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
+		System.out.println("Size = " + list.size());
+
+		try {
+			Entity employee = new Entity("Message", list.size() + 2);
+
+			employee.setProperty("Sender", this.name);
+			employee.setProperty("Reciever", this.email);
+			employee.setProperty("Status", this.password);
+
+			datastore.put(employee);
+			txn.commit();
+
+		} finally {
+			if (txn.isActive()) {
+				txn.rollback();
+			}
+		}
+		return true;
+	}
+
+	// ------------------------------------------------------------------------------------------------------------
+	/*
+	 * public Boolean saveGroupmessage() { DatastoreService datastore =
+	 * DatastoreServiceFactory .getDatastoreService(); Transaction txn =
+	 * datastore.beginTransaction(); Query gaeQuery = new Query("Groupmessage");
+	 * PreparedQuery pq = datastore.prepare(gaeQuery); List<Entity> list =
+	 * pq.asList(FetchOptions.Builder.withDefaults());
+	 * System.out.println("Size = " + list.size());
+	 * 
+	 * try { Entity employee = new Entity("Groupmessage", list.size() + 2);
+	 * 
+	 * employee.setProperty("Sender", this.name);
+	 * employee.setProperty("Groupid", this.Groupid);
+	 * employee.setProperty("Status", this.password);
+	 * 
+	 * datastore.put(employee); txn.commit();
+	 * 
+	 * }finally{ if (txn.isActive()) { txn.rollback(); } } return true; }
+	 */
+	// -----------------------------------------------------------------------------------------------------------
+	/**
+	 * @return the groupid
+	 */
+	/*
+	 * public String getGroupid() { return Groupid; } /**
+	 * 
+	 * @param groupid the groupid to set
+	 * 
+	 * public void setGroupid(String groupid) { Groupid = groupid; }
+	 * //----------
+	 * --------------------------------------------------------------
+	 * ------------------------------ public Boolean saveGroupid() {
+	 * List<com.FCI.SWE.Models.User> UserList= new
+	 * ArrayList<com.FCI.SWE.Models.User>(); DatastoreService datastore =
+	 * DatastoreServiceFactory .getDatastoreService(); Transaction txn =
+	 * datastore.beginTransaction(); Query gaeQuery = new Query("Groupschat");
+	 * PreparedQuery pq = datastore.prepare(gaeQuery); List<Entity> list =
+	 * pq.asList(FetchOptions.Builder.withDefaults());
+	 * System.out.println("Size = " + list.size());
+	 * 
+	 * try {
+	 * 
+	 * 
+	 * 
+	 * 
+	 * for (int i=0 ; i< UserList.size(); i++) { Entity employee = new
+	 * Entity("Groupschat", list.size() + 2); employee.setProperty("Groupid",
+	 * this.Groupid); employee.setProperty("Users", UserList.get(i).getName());
+	 * datastore.put(employee); }
+	 * 
+	 * //employee.setProperty("Groupid", this.Groupid);
+	 * //employee.setProperty("Users", UserList.get(i).getname());
+	 * 
+	 * 
+	 * txn.commit();
+	 * 
+	 * }finally{ if (txn.isActive()) { txn.rollback(); } } return true; }
+	 * 
+	 * //------------------------------------------------------------------------
+	 * ------------------------- public Boolean saveGroupchat() {
+	 * DatastoreService datastore = DatastoreServiceFactory
+	 * .getDatastoreService(); Transaction txn = datastore.beginTransaction();
+	 * Query gaeQuery = new Query("Groupschat"); PreparedQuery pq =
+	 * datastore.prepare(gaeQuery); List<Entity> list =
+	 * pq.asList(FetchOptions.Builder.withDefaults());
+	 * System.out.println("Size = " + list.size());
+	 * 
+	 * try { Entity employee = new Entity("Groupschat", list.size() + 2);
+	 * 
+	 * employee.setProperty("Sender", this.name);
+	 * employee.setProperty("Groupid", this.Groupid);
+	 * employee.setProperty("Status", this.password);
+	 * 
+	 * datastore.put(employee); txn.commit();
+	 * 
+	 * }finally{ if (txn.isActive()) { txn.rollback(); } } return true; }
+	 * //------
+	 * ------------------------------------------------------------------
+	 * -------------------
+	 */
+
+	/**
+	 * 
+	 * @param ID
+	 * @param Name
+	 */
+	public static void conversation(String ID, String Name) {
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+
+		Query gaeQuery = new Query("conversation");
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
+
+		Entity employee = new Entity("conversation", list.size() + 2);
+		employee.setProperty("Conversation_ID", ID);
+
+		employee.setProperty("Member_Name", Name);
+
+		datastore.put(employee);
+
+		// return true;
+	}
+
+	/*
+	 * public static void msgcontent(String ID,String Message) {
+	 * DatastoreService datastore = DatastoreServiceFactory
+	 * .getDatastoreService();
+	 * 
+	 * Query gaeQuery = new Query("MessageContent"); PreparedQuery pq =
+	 * datastore.prepare(gaeQuery); List<Entity> list =
+	 * pq.asList(FetchOptions.Builder.withDefaults());
+	 * 
+	 * 
+	 * Entity employee = new Entity("MessageContent", list.size() + 2);
+	 * employee.setProperty("Conversation_ID",ID );
+	 * 
+	 * employee.setProperty("Sender", User.getCurrentActiveUser().getName());
+	 * employee.setProperty("Message", Message);
+	 * 
+	 * 
+	 * 
+	 * datastore.put(employee);
+	 * 
+	 * 
+	 * //return true; }
+	 */
+
+	/**
+	 * 
+	 * @param ID
+	 * @param Message
+	 */
+	public static void msgcheck(String ID, String Message) {
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+
+		Query gaeQuery = new Query("conversation");
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
+
+		Entity employee = new Entity("conversation", list.size() + 2);
+
+		for (Entity entity : pq.asIterable()) {
+
+			if (entity.getProperty("Conversation_ID").equals(ID)
+					&& entity.getProperty("Member_Name").equals(
+							User.getCurrentActiveUser().getName())) {
+
+				// entity.setProperty("status", "accept");
+
+				DatastoreService datastor = DatastoreServiceFactory
+						.getDatastoreService();
+
+				Query Query = new Query("MessageContent_");
+				PreparedQuery pq2 = datastor.prepare(Query);
+				List<Entity> list1 = pq2.asList(FetchOptions.Builder
+						.withDefaults());
+
+				Entity employeee = new Entity("MessageContent_",
+						list1.size() + 2);
+				employeee.setProperty("Conversation_ID", ID);
+
+				employeee.setProperty("Sender", User.getCurrentActiveUser()
+						.getName());
+				employeee.setProperty("Message", Message);
+
+				datastor.put(employeee);
+
+			}
+
+		}
+
+		// return true;
 	}
 
 }

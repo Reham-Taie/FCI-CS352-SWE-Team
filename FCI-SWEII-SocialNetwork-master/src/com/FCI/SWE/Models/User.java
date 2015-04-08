@@ -4,8 +4,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import com.google.appengine.tools.util.Parser;
-
 
 public class User {
 	private long id;
@@ -32,16 +30,8 @@ public class User {
 
 	}
 	
-	public User() {
-		// TODO Auto-generated constructor stub
-	}
-
 	private void setId(long id){
 		this.id = id;
-	}
-	
-	private void setEmail(String S){
-		this.email = S;
 	}
 	
 	public long getId(){
@@ -64,9 +54,7 @@ public class User {
 		return currentActiveUser;
 	}
 	public static void setCurrentActiveUser(){
-		 currentActiveUser=null;
-	}
-	
+		 currentActiveUser=null;}
 	
 	/**
 	 * 
@@ -92,24 +80,6 @@ public class User {
 		}
 		return null;
 
-	}
-	public static User parseUserInfo(String json)
-	{
-		JSONParser parser = new JSONParser();
-		try
-		{
-		JSONObject object = (JSONObject) parser.parse(json);
-		User user = new User();
-		user.setEmail(object.get("email").toString());
-		user.setId(Long.parseLong(object.get("Id").toString()));
-		return user;
-		}
-	catch (ParseException e)
-	{
-		
-		e.printStackTrace();
-	}
-	return null;
 	}
 
 
