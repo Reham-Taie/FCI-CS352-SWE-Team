@@ -28,6 +28,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.FCI.SWE.Models.User;
+import com.FCI.SWE.ServicesModels.Builder;
+import com.FCI.SWE.ServicesModels.TimelinePost;
 import com.FCI.SWE.ServicesModels.UserEntity;
 
 /**
@@ -269,6 +271,37 @@ public class UserServices {
 		return object.toString();
 	}
 	// ---------------------------------------------------
+	@POST
+	@Path("/postservice")
+	public String postservice(@FormParam("post") String post,@FormParam("Post_To") String Post_To) {
+		JSONObject object = new JSONObject();
+		UserEntity.savepost(post,Post_To);
+
+		object.put("status", " success");
+		// System.out.print(uemail);
+		// object.put("status", "accept");
+		return object.toString();
+
+	}
+	
+	@POST
+	@Path("/createpageService")
+	public String createpageService (@FormParam("pageName") String pageName,
+	@FormParam("pageID") String pageID,
+	@FormParam("pageType") String pageType,
+	@FormParam("pagePrivacy") String pagePrivacy) {
+		JSONObject object = new JSONObject();
+		UserEntity.savepage(pageName,pageID,pageType,pagePrivacy);
+
+		object.put("status", " success");
+		// System.out.print(uemail);
+		// object.put("status", "accept");
+		return object.toString();
+
+	}
+	
+	
+	//----------------------------------------------------
 	/*
 	 * @POST
 	 * 
@@ -307,4 +340,80 @@ public class UserServices {
 	 * object.put("Status", "OK"); return object.toString(); }
 	 */
 
+	
+	@POST
+	@Path("/likepageService")
+	public String likepageService(@FormParam("p") String p) {
+		JSONObject object = new JSONObject();
+		UserEntity.like(p);
+
+		object.put("status", " accept");
+		return object.toString();
+	}
+	@POST
+	@Path("/EnterPageService")
+	public String EnterPageService(@FormParam("p") String p) {
+		JSONObject object = new JSONObject();
+		UserEntity.Enter(p);
+
+		object.put("status", " accept");
+		return object.toString();
+	}
+	
+	
+	@POST
+	@Path("/TimelinePostService")
+	public String TimelinePostService(@FormParam("PostType") String PostType , @FormParam("TimelineName") String TimelineName
+			,@FormParam("Post") String Post
+			,@FormParam("Feeling")String Feeling
+			,@FormParam("Privacy") String Privacy ) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		JSONObject object = new JSONObject();
+		//Builder b =new Builder();
+		//b.checkType (PostType);
+		UserEntity.createTimelinePost(PostType,TimelineName,Post,Feeling,Privacy);
+		//Builder b =new Builder();
+		//b.checkType (PostType);
+		object.put("status", " accept");
+		return object.toString();
+	}
+	
+	@POST
+	@Path("/PageService")
+	public String PageService(@FormParam("PostType") String PostType , @FormParam("TimelineName") String TimelineName
+			,@FormParam("Post") String Post
+			,@FormParam("Feeling")String Feeling
+			,@FormParam("Privacy") String Privacy ) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		JSONObject object = new JSONObject();
+		//Builder b =new Builder();
+		//b.checkType (PostType);
+		UserEntity.createTimelinePost(PostType,TimelineName,Post,Feeling,Privacy);
+		//Builder b =new Builder();
+		//b.checkType (PostType);
+		object.put("status", " accept");
+		return object.toString();
+	}
+	
+	@POST
+	@Path("/HashtagService")
+	public String HashtagService(@FormParam("Hashtag") String Hashtag ,@FormParam("Post") String Post) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		JSONObject object = new JSONObject();
+		
+		UserEntity.createHashtagPost(Hashtag,Post);
+		
+		object.put("status", " accept");
+		return object.toString();
+	}
+	
+	@POST
+	@Path("/HashtagcountService")
+	public String HashtagService(@FormParam("Hashtag") String Hashtag ) {
+		JSONObject object = new JSONObject();
+		
+		UserEntity.countHashtagPost(Hashtag);
+		
+		object.put("status", " accept");
+		return object.toString();
+	}
+	
+	
 }

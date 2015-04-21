@@ -21,8 +21,35 @@
 <form action="/social/conversationpage" method="post">  <br>
 <br> <input type="submit" value="Create Conversation"> 
 </form> 
+
+<form action="/social/timeline" method="post">  <br>
+<br> <input type="submit" value=${it.name}> 
+</form> 
+
+
+<form action="/social/page" method="post">  <br>
+<br> <input type="submit" value="Create_Page"> 
+</form> 
+
+
+<form action="/social/likepage" method="post">  <br>
+<br> <input type="submit" value="Like/Open Page"> 
+</form> 
+
+
+<form action="/social/tlpost" method="post">  <br>
+<br> <input type="submit" value="Timeline Post"> 
+</form> 
+
+<form action="/social/ppost" method="post">  <br>
+<br> <input type="submit" value="Page Post"> 
+</form> 
+<form action="/social/htag" method="post">  <br>
+<br> <input type="submit" value="Hashtag Post"> 
+</form> 
 ////////////////////////////
- 
+
+
  <P>link to send a friend message:</P><a href = "/social/message">Send Message to user</a>
   
    <P>link to send a group message:</P><a href = "/social/chatmessage">Send Group Message</a>

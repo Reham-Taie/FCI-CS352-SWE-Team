@@ -34,6 +34,7 @@ public class UserEntity {
 	private String email;
 	private String password;
 	private long id;
+	public static int count=0;
 
 	/**
 	 * Constructor accepts user data
@@ -420,5 +421,189 @@ public class UserEntity {
 
 		// return true;
 	}
+	
+	//====================================================
+	public static void savepost(String post,String Post_To) {
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+
+		Query gaeQuery = new Query("Posts");
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
+
+		Entity employee = new Entity("Posts", list.size() + 2);
+		employee.setProperty("Post_From", User.getCurrentActiveUser().getName()
+				.toString());
+		
+		employee.setProperty("Post", post);
+
+		employee.setProperty("Post_To", Post_To);
+		
+
+		datastore.put(employee);
+
+		// return true;
+	}
+
+	
+	public static void savepage(String pageName,String pageID,String pageType,String pagePrivacy) {
+		
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+
+		Query gaeQuery = new Query("Pages_");
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
+
+		Entity employee = new Entity("Pages_", list.size() + 2);
+		employee.setProperty("Admin", User.getCurrentActiveUser().getName());
+		employee.setProperty("Page_Name", pageName);
+		employee.setProperty("Page_ID", pageID);
+		employee.setProperty("Page_Type", pageType);
+		employee.setProperty("Page_Privacy", pagePrivacy);
+		employee.setProperty("Number_Of_Likes", count);
+
+		datastore.put(employee);
+
+		// return true;
+	}
+
+	public static UserEntity like(String p) {
+		
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+
+		Query gaeQuery = new Query("Pages_");
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		for (Entity entity : pq.asIterable()) {
+			if (entity.getProperty("Page_Name").toString().equals(p)) {
+
+				entity.setProperty("Number_Of_Likes",Integer.parseInt(entity.getProperty("Number_Of_Likes").toString())+1);
+
+				datastore.put(entity);
+
+			}
+			
+		}
+
+		return null;
+	}
+
+public static UserEntity Enter(String p) {
+		
+
+	DatastoreService datastore = DatastoreServiceFactory
+			.getDatastoreService();
+
+	Query gaeQuery = new Query("PagePosts");
+	PreparedQuery pq = datastore.prepare(gaeQuery);
+	for (Entity entity : pq.asIterable()) {
+		if (entity.getProperty("TimelineName").toString().equals(p)) {
+
+			entity.setProperty("Number_Of_seen",Integer.parseInt(entity.getProperty("Number_Of_seen").toString())+1);
+
+			datastore.put(entity);
+
+		}
+		
+	}
+
+	return null;
+}
+	
+	
+public static void createTimelinePost (String PostType,String TimelineName,String Post,String Feeling,String Privacy) throws InstantiationException, IllegalAccessException, ClassNotFoundException  
+	{
+	System.out.println(PostType + " " + TimelineName + " " + Post + " " + Feeling+ " " + Privacy);
+	Builder b = new Builder();
+	
+	//b.setPost(PostType);
+	b.setTimelineName(TimelineName);
+	b.setPost(Post);
+	b.setFeeling(Feeling);
+	b.setPrivacy(Privacy);
+	
+	b.checkType (PostType);
+	
+	
+	
+	}
+	
+public static void createHashtagPost(String Hashtag,String Post) 
+{
+
+
+
+	DatastoreService datastore = DatastoreServiceFactory
+			.getDatastoreService();
+
+	Query gaeQuery = new Query("HashtagTable");
+	PreparedQuery pq = datastore.prepare(gaeQuery);
+	List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
+
+	Entity employee = new Entity("HashtagTable", list.size() + 2);
+	employee.setProperty("Admin", User.getCurrentActiveUser().getName());
+	
+	
+	employee.setProperty("Hashtag", Hashtag);
+	employee.setProperty("Post", Post);
+	
+
+	datastore.put(employee);
+
+	// return true;
+
+
 
 }
+
+
+public static void savecount() {
+DatastoreService datastore = DatastoreServiceFactory
+		.getDatastoreService();
+
+Query gaeQuery = new Query("HashtagCount");
+PreparedQuery pq = datastore.prepare(gaeQuery);
+List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
+
+Entity employee = new Entity("HashtagCount", list.size() + 2);
+
+
+employee.setProperty("Hashtag",0 );
+employee.setProperty("Count", 0);
+
+
+datastore.put(employee);
+}
+public static void countHashtagPost(String Hashtag) 
+{
+	savecount();
+
+	DatastoreService datastore = DatastoreServiceFactory
+			.getDatastoreService();
+
+	Query gaeQuery = new Query("HashtagTable");
+	PreparedQuery pq = datastore.prepare(gaeQuery);
+	DatastoreService datastoree = DatastoreServiceFactory
+			.getDatastoreService();
+	Query gaeQueryy = new Query("HashtagCount_");
+	PreparedQuery pq1 = datastoree.prepare(gaeQueryy);
+	for (Entity entity : pq.asIterable()) {
+		if (entity.getProperty("Hashtag").toString().equals(Hashtag)) {
+			
+
+			
+			List<Entity> list = pq1.asList(FetchOptions.Builder.withDefaults());
+			Entity employee = new Entity("HashtagCount_", list.size() + 2);
+			employee.setProperty("Hashtag",Hashtag);
+			employee.setProperty("Count",Integer.parseInt(employee.getProperty("Count").toString())+1);
+
+			datastoree.put(employee);
+
+		}
+}
+}
+
+}//class
+
+
