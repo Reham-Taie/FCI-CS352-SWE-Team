@@ -540,7 +540,7 @@ public class UserController {
 	 * @param Groupid
 	 * @return
 	 */
-	@POST
+	/*@POST
 	@Path("/Groupmessage")
 	@Produces("text/html")
 	public String Groupmessage(@FormParam("uname") String uname,
@@ -569,7 +569,7 @@ public class UserController {
 		}
 		return null;
 	}
-
+*/
 	// -----------------------------------------------------------------------------------------------------------
 	/**
 	 * 
@@ -578,7 +578,7 @@ public class UserController {
 	 * @param Groupid
 	 * @return
 	 */
-	@POST
+	/*@POST
 	@Path("/Groupmessagechat")
 	@Produces("text/html")
 	public String Groupmessagechat(@FormParam("uname") String uname,
@@ -607,11 +607,11 @@ public class UserController {
 		}
 		return null;
 	}
-	
+	*/
 	// -------------------------------------------------------------------------------------------------------------
 
 	
-	@POST
+	@POST 
 	@Path("/createpage")
 	@Produces("text/html")
 	public Response createpage(@FormParam("pageName") String pageName,

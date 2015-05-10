@@ -166,7 +166,7 @@ public class UserEntity {
 	 * 
 	 * @param friendEmail
 	 */
-	public static void friend(String friendEmail) {
+	public static boolean friend(String friendEmail) {
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
 
@@ -174,7 +174,7 @@ public class UserEntity {
 		PreparedQuery pq = datastore.prepare(gaeQuery);
 		List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
 
-		Entity employee = new Entity("friends", list.size() + 2);
+	    Entity employee = new Entity("friends", list.size() + 2);
 		employee.setProperty("friendEmail", friendEmail);
 
 		employee.setProperty("myEmail", User.getCurrentActiveUser().getEmail()
@@ -183,7 +183,7 @@ public class UserEntity {
 
 		datastore.put(employee);
 
-		// return true;
+		 return true;
 	}
 
 	/**
@@ -191,7 +191,7 @@ public class UserEntity {
 	 * @param semail
 	 * @return
 	 */
-	public static UserEntity getrequest(String semail) {
+	public static void getrequest(String semail) {
 		String myEmail = User.getCurrentActiveUser().getEmail().toString();
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
@@ -211,7 +211,7 @@ public class UserEntity {
 					+ entity.getProperty("friendEmail").toString());
 		}
 
-		return null;
+		//return null;
 	}
 
 	// /////////////////////////////////////////////
@@ -269,70 +269,14 @@ public class UserEntity {
 	/**
 	 * @return the groupid
 	 */
-	/*
-	 * public String getGroupid() { return Groupid; } /**
-	 * 
-	 * @param groupid the groupid to set
-	 * 
-	 * public void setGroupid(String groupid) { Groupid = groupid; }
-	 * //----------
-	 * --------------------------------------------------------------
-	 * ------------------------------ public Boolean saveGroupid() {
-	 * List<com.FCI.SWE.Models.User> UserList= new
-	 * ArrayList<com.FCI.SWE.Models.User>(); DatastoreService datastore =
-	 * DatastoreServiceFactory .getDatastoreService(); Transaction txn =
-	 * datastore.beginTransaction(); Query gaeQuery = new Query("Groupschat");
-	 * PreparedQuery pq = datastore.prepare(gaeQuery); List<Entity> list =
-	 * pq.asList(FetchOptions.Builder.withDefaults());
-	 * System.out.println("Size = " + list.size());
-	 * 
-	 * try {
-	 * 
-	 * 
-	 * 
-	 * 
-	 * for (int i=0 ; i< UserList.size(); i++) { Entity employee = new
-	 * Entity("Groupschat", list.size() + 2); employee.setProperty("Groupid",
-	 * this.Groupid); employee.setProperty("Users", UserList.get(i).getName());
-	 * datastore.put(employee); }
-	 * 
-	 * //employee.setProperty("Groupid", this.Groupid);
-	 * //employee.setProperty("Users", UserList.get(i).getname());
-	 * 
-	 * 
-	 * txn.commit();
-	 * 
-	 * }finally{ if (txn.isActive()) { txn.rollback(); } } return true; }
-	 * 
-	 * //------------------------------------------------------------------------
-	 * ------------------------- public Boolean saveGroupchat() {
-	 * DatastoreService datastore = DatastoreServiceFactory
-	 * .getDatastoreService(); Transaction txn = datastore.beginTransaction();
-	 * Query gaeQuery = new Query("Groupschat"); PreparedQuery pq =
-	 * datastore.prepare(gaeQuery); List<Entity> list =
-	 * pq.asList(FetchOptions.Builder.withDefaults());
-	 * System.out.println("Size = " + list.size());
-	 * 
-	 * try { Entity employee = new Entity("Groupschat", list.size() + 2);
-	 * 
-	 * employee.setProperty("Sender", this.name);
-	 * employee.setProperty("Groupid", this.Groupid);
-	 * employee.setProperty("Status", this.password);
-	 * 
-	 * datastore.put(employee); txn.commit();
-	 * 
-	 * }finally{ if (txn.isActive()) { txn.rollback(); } } return true; }
-	 * //------
-	 * ------------------------------------------------------------------
-	 * -------------------
-	 */
+	
 
 	/**
 	 * 
 	 * @param ID
 	 * @param Name
 	 */
-	public static void conversation(String ID, String Name) {
+	public static boolean conversation(String ID, String Name) {
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
 
@@ -347,39 +291,17 @@ public class UserEntity {
 
 		datastore.put(employee);
 
-		// return true;
+		return true;
 	}
 
-	/*
-	 * public static void msgcontent(String ID,String Message) {
-	 * DatastoreService datastore = DatastoreServiceFactory
-	 * .getDatastoreService();
-	 * 
-	 * Query gaeQuery = new Query("MessageContent"); PreparedQuery pq =
-	 * datastore.prepare(gaeQuery); List<Entity> list =
-	 * pq.asList(FetchOptions.Builder.withDefaults());
-	 * 
-	 * 
-	 * Entity employee = new Entity("MessageContent", list.size() + 2);
-	 * employee.setProperty("Conversation_ID",ID );
-	 * 
-	 * employee.setProperty("Sender", User.getCurrentActiveUser().getName());
-	 * employee.setProperty("Message", Message);
-	 * 
-	 * 
-	 * 
-	 * datastore.put(employee);
-	 * 
-	 * 
-	 * //return true; }
-	 */
+	
 
 	/**
 	 * 
 	 * @param ID
 	 * @param Message
 	 */
-	public static void msgcheck(String ID, String Message) {
+	public static boolean  msgcheck(String ID, String Message) {
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
 
@@ -414,16 +336,22 @@ public class UserEntity {
 				employeee.setProperty("Message", Message);
 
 				datastor.put(employeee);
+				return true;
 
 			}
+			
+				//return false ;
 
 		}
+		return false;
+		
+			
 
 		// return true;
 	}
 	
 	//====================================================
-	public static void savepost(String post,String Post_To) {
+	public static Key savepost(String post,String Post_To) {
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
 
@@ -440,13 +368,13 @@ public class UserEntity {
 		employee.setProperty("Post_To", Post_To);
 		
 
-		datastore.put(employee);
+		Key s=datastore.put(employee);
 
-		// return true;
+		 return s;
 	}
 
 	
-	public static void savepage(String pageName,String pageID,String pageType,String pagePrivacy) {
+	public static boolean savepage(String pageName,String pageID,String pageType,String pagePrivacy) {
 		
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
@@ -462,13 +390,13 @@ public class UserEntity {
 		employee.setProperty("Page_Type", pageType);
 		employee.setProperty("Page_Privacy", pagePrivacy);
 		employee.setProperty("Number_Of_Likes", count);
-
-		datastore.put(employee);
-
-		// return true;
+ 
+		datastore.put(employee) ;
+		 return true;
+		
 	}
 
-	public static UserEntity like(String p) {
+	public static boolean like(String p) {
 		
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
@@ -476,22 +404,27 @@ public class UserEntity {
 		Query gaeQuery = new Query("Pages_");
 		PreparedQuery pq = datastore.prepare(gaeQuery);
 		for (Entity entity : pq.asIterable()) {
-			if (entity.getProperty("Page_Name").toString().equals(p)) {
+			System.out.println("ffffff");
+			if (entity.getProperty("Page_Name").toString().equals(p.trim())) {
 
 				entity.setProperty("Number_Of_Likes",Integer.parseInt(entity.getProperty("Number_Of_Likes").toString())+1);
 
 				datastore.put(entity);
-
+				return true;
+				
 			}
 			
+		
+				
 		}
-
-		return null;
+		
+		return  false;
+		
 	}
 
-public static UserEntity Enter(String p) {
+public static boolean Enter(String p) {
 		
-
+    		
 	DatastoreService datastore = DatastoreServiceFactory
 			.getDatastoreService();
 
@@ -503,16 +436,16 @@ public static UserEntity Enter(String p) {
 			entity.setProperty("Number_Of_seen",Integer.parseInt(entity.getProperty("Number_Of_seen").toString())+1);
 
 			datastore.put(entity);
-
+			return true;
 		}
 		
 	}
 
-	return null;
+	return false;
 }
 	
 	
-public static void createTimelinePost (String PostType,String TimelineName,String Post,String Feeling,String Privacy) throws InstantiationException, IllegalAccessException, ClassNotFoundException  
+public static boolean createTimelinePost (String PostType,String TimelineName,String Post,String Feeling,String Privacy) throws InstantiationException, IllegalAccessException, ClassNotFoundException  
 	{
 	System.out.println(PostType + " " + TimelineName + " " + Post + " " + Feeling+ " " + Privacy);
 	Builder b = new Builder();
@@ -526,10 +459,10 @@ public static void createTimelinePost (String PostType,String TimelineName,Strin
 	b.checkType (PostType);
 	
 	
-	
+	return true;
 	}
 	
-public static void createHashtagPost(String Hashtag,String Post) 
+public static boolean  createHashtagPost(String Hashtag,String Post) 
 {
 
 
@@ -549,33 +482,29 @@ public static void createHashtagPost(String Hashtag,String Post)
 	employee.setProperty("Post", Post);
 	
 
-	datastore.put(employee);
+	 datastore.put(employee);
 
-	// return true;
+	 return true;
 
 
 
 }
 
 
-public static void savecount() {
+public static boolean savecount() {
 DatastoreService datastore = DatastoreServiceFactory
 		.getDatastoreService();
 
 Query gaeQuery = new Query("HashtagCount");
 PreparedQuery pq = datastore.prepare(gaeQuery);
 List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
-
 Entity employee = new Entity("HashtagCount", list.size() + 2);
-
-
 employee.setProperty("Hashtag",0 );
 employee.setProperty("Count", 0);
-
-
 datastore.put(employee);
+return true;
 }
-public static void countHashtagPost(String Hashtag) 
+public static boolean countHashtagPost(String Hashtag) 
 {
 	savecount();
 
@@ -586,22 +515,26 @@ public static void countHashtagPost(String Hashtag)
 	PreparedQuery pq = datastore.prepare(gaeQuery);
 	DatastoreService datastoree = DatastoreServiceFactory
 			.getDatastoreService();
-	Query gaeQueryy = new Query("HashtagCount_");
-	PreparedQuery pq1 = datastoree.prepare(gaeQueryy);
+	//Query gaeQueryy = new Query("HashtagCount");
+	//PreparedQuery pq1 = datastoree.prepare(gaeQueryy);
 	for (Entity entity : pq.asIterable()) {
 		if (entity.getProperty("Hashtag").toString().equals(Hashtag)) {
 			
-
+			Query gaeQueryy = new Query("HashtagCount");
+			PreparedQuery pq1 = datastoree.prepare(gaeQueryy);
+			
 			
 			List<Entity> list = pq1.asList(FetchOptions.Builder.withDefaults());
-			Entity employee = new Entity("HashtagCount_", list.size() + 2);
+			Entity employee = new Entity("HashtagCount", list.size() + 2);
 			employee.setProperty("Hashtag",Hashtag);
 			employee.setProperty("Count",Integer.parseInt(employee.getProperty("Count").toString())+1);
 
 			datastoree.put(employee);
+			return true;
 
 		}
 }
+	return false;
 }
 
 }//class

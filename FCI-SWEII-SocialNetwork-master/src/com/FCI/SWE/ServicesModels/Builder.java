@@ -22,6 +22,7 @@ public class Builder {
 	public void setPrivacy(String u) {
 		Privacy = u;
 	}
+	
 	public void checkType(String X) throws InstantiationException,
 			IllegalAccessException, ClassNotFoundException {
 		PostType p = (PostType) Class

@@ -16,7 +16,7 @@ public class GroupMsg implements command{
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
 
-		Query gaeQuery = new Query("conversation");
+		Query gaeQuery = new Query("Message");
 		PreparedQuery pq = datastore.prepare(gaeQuery);
 		for (Entity entity : pq.asIterable()) {
 			if (entity.getProperty("Member_Name").toString().equals(X)

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Default suite]">
+  <test name="Default test(failed)">
+    <classes>
+      <class name="com.FCI.SWE.Services.UserServicesTest">
+        <methods>
+          <include name="PageService"/>
+          <include name="signoutService"/>
+          <include name="EnterPageService"/>
+          <include name="Messageservice"/>
+          <include name="createpageService"/>
+          <include name="conversationService"/>
+          <include name="HashtagService"/>
+          <include name="acceptrequestService"/>
+          <include name="likepageService"/>
+          <include name="sendrequestService"/>
+        </methods>
+      </class> <!-- com.FCI.SWE.Services.UserServicesTest -->
+    </classes>
+  </test> <!-- Default test(failed) -->
+</suite> <!-- Failed suite [Default suite] -->
