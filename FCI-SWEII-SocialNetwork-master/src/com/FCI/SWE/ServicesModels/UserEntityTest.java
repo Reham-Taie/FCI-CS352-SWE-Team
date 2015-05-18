@@ -37,7 +37,7 @@ public class UserEntityTest {
 
 @Test
   public void like() { 
-	  UserEntity ge=new UserEntity(null, null, null);
+	  pageEntity ge=new pageEntity(null, null, null);
 	  Assert.assertEquals(false , ge.like("FCI"));
   }
 
@@ -57,23 +57,23 @@ public class UserEntityTest {
  @Test
  public void friend() {
 	 
-	 UserEntity s=new UserEntity(null, null, null);
+	RequestEntity s=new RequestEntity();
 	 Assert.assertEquals(false, s.friend("reham"));
 	  }
  @Test
  public void savecount() {
-	 UserEntity s=new UserEntity(null, null, null);
+	postEntity s=new postEntity(null, null, null);
 	 Assert.assertEquals(true, s.savecount());
  }
  @Test
  public void msgcheck() {
-	 UserEntity s=new UserEntity(null, null, null);
+	 MessageEntity s=new MessageEntity(null, null, null);
 	 Assert.assertNotNull(true);
  }
  
  @Test
  public void createTimelinePost()  {
-	   UserEntity ge = new UserEntity(null, null, null);
+	   postEntity ge = new postEntity(null, null, null);
 	 try {
 		Assert.assertEquals(false ,ge.createTimelinePost("khik", "lh ", "jln", "ilu", "lup") );
 	} catch (InstantiationException | IllegalAccessException
@@ -84,7 +84,7 @@ public class UserEntityTest {
 	   }
   @Test
   public void Enter() {
-	  UserEntity s=new UserEntity(null, null, null);
+	 pageEntity s=new pageEntity(null, null, null);
 		 Assert.assertEquals(false, s.Enter("FCI"));
   }
 
@@ -96,13 +96,13 @@ public class UserEntityTest {
 
   @Test
   public void countHashtagPost() {
-	  UserEntity s=new UserEntity(null, null, null);
+	  postEntity s=new postEntity(null, null, null);
 		 Assert.assertEquals(false, s.countHashtagPost("lolo"));
 		}
 
   @Test
   public void createHashtagPost() {
-	  UserEntity ge = new UserEntity(null, null, null);
+	  postEntity ge = new postEntity(null, null, null);
 	   Assert.assertEquals(false ,ge.createHashtagPost("lolo", "post") );
   }
 
@@ -110,19 +110,19 @@ public class UserEntityTest {
   
   @Test
   public void savemessage() {
-	    UserEntity ge=new UserEntity(null, null, null);
+	    MessageEntity ge=new MessageEntity(null, null, null);
 	    Assert.assertEquals(true, ge.savemessage().booleanValue());
   }
 
   @Test
   public void savepage() {
-	  UserEntity ge=new UserEntity(null, null, null);
+	  pageEntity ge=new pageEntity(null, null, null);
 	  Assert.assertEquals(false, ge.savepage("hhh", "2", "Y", "private"));
   }
 
   @Test
   public void savepost() {
-	  UserEntity ge = new UserEntity(null, null, null);
+	  postEntity ge = new postEntity(null, null, null);
 	   Assert.assertEquals(false , ge.savepost("ty","reham"));
   }
 

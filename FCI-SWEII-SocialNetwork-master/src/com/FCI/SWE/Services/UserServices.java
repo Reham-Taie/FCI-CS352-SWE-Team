@@ -29,8 +29,12 @@ import org.json.simple.parser.ParseException;
 
 import com.FCI.SWE.Models.User;
 import com.FCI.SWE.ServicesModels.Builder;
+import com.FCI.SWE.ServicesModels.MessageEntity;
+import com.FCI.SWE.ServicesModels.RequestEntity;
 import com.FCI.SWE.ServicesModels.TimelinePost;
 import com.FCI.SWE.ServicesModels.UserEntity;
+import com.FCI.SWE.ServicesModels.pageEntity;
+import com.FCI.SWE.ServicesModels.postEntity;
 
 /**
  * This class contains REST services, also contains action function for web
@@ -113,6 +117,11 @@ public class UserServices {
 		return object.toString();
 
 	}
+	/**
+	 * 
+	 * @param sname
+	 * @return
+	 */
 
 	@POST
 	@Path("/searchUserService")
@@ -128,18 +137,6 @@ public class UserServices {
 
 		}
 		return returnedJson.toJSONString();
-		/*
-		 * UserEntity.searchUser(sname); if(UserEntity.searchUser(sname)==true)
-		 * { object.put("status"," Found");
-		 * 
-		 * } else { object.put("status"," Not Found"); }
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * return object.toString();
-		 */
 
 	}
 
@@ -155,265 +152,15 @@ public class UserServices {
 		object.put("status", " success");
 
 		return object.toString();
-
-	}
-
-	@POST
-	@Path("/sendrequest")
-	public String sendrequestService(@FormParam("femail") String uemail) {
-		JSONObject object = new JSONObject();
-		UserEntity.friend(uemail);
-
-		object.put("status", " success");
-		// System.out.print(uemail);
-		// object.put("status", "accept");
-		return object.toString();
-
-	}
-
-	/* ////////////////////////////////////////// */
-
-	/**
-	 * conversation Rest Service, this service will be called to save the names
-	 * of the members in the conversation and conversation ID process
-	 * 
-	 * @param ID
-	 * @param Name
-	 * @return
-	 */
-	@POST
-	@Path("/conversationService")
-	public String conversationService(@FormParam("ID") String ID,
-			@FormParam("Name") String Name) {
-		JSONObject object = new JSONObject();
-		UserEntity.conversation(ID, Name);
-
-		object.put("status", " success");
-		// System.out.print(uemail);
-		// object.put("status", "accept");
-		return object.toString();
-
-	}
-
-	/*
-	 * @POST
-	 * 
-	 * @Path("/msgcontentService") public String
-	 * msgcontentService(@FormParam("ID") String ID,@FormParam("Message") String
-	 * Message) { JSONObject object = new JSONObject();
-	 * UserEntity.msgcontent(ID,Message);
-	 * 
-	 * object.put("status"," success"); //System.out.print(uemail);
-	 * //object.put("status", "accept"); return object.toString();
-	 * 
-	 * }
-	 */
-	/**
-	 * msgcheckService, this service will save the message that related to a
-	 * specific conversation
-	 * 
-	 * @param ID
-	 * @param Message
-	 * @return
-	 */
-	@POST
-	@Path("/msgcheckService")
-	public String msgcontentService(@FormParam("ID") String ID,
-			@FormParam("Message") String Message) {
-		JSONObject object = new JSONObject();
-		UserEntity.msgcheck(ID, Message);
-
-		// object.put("status"," success");
-		// System.out.print(uemail);
-		// object.put("status", "accept");
-		return object.toString();
-
-	}
-
-	/**
-	 * acceptrequest service, in this service the user will enter the email and
-	 * check of the request and accept it
-	 * 
-	 * @param semail
-	 * @return
-	 */
-	@POST
-	@Path("/acceptrequest")
-	public String acceptrequestService(@FormParam("semail") String semail) {
-		JSONObject object = new JSONObject();
-		UserEntity.getrequest(semail);
-
-		object.put("status", " accept");
-		return object.toString();
-
-	}
-
-	// //////////////////////////////////////////
-	/**
-	 * Messageservice, this service will send a message to one friend only by
-	 * using his name
-	 * 
-	 * @param Sender
-	 * @param Reciever
-	 * @param message
-	 * @return
-	 */
-	@POST
-	@Path("/Messageservice")
-	public String Messageservice(@FormParam("Sender") String Sender,
-			@FormParam("Reciever") String Reciever,
-			@FormParam("message") String message) {
-		System.out.println(message);
-		UserEntity user2 = new UserEntity(Sender, Reciever, message);
-		user2.savemessage();
-		JSONObject object = new JSONObject();
-		object.put("Status", "OK");
-		return object.toString();
-	}
-	// ---------------------------------------------------
-	@POST
-	@Path("/postservice")
-	public String postservice(@FormParam("post") String post,@FormParam("Post_To") String Post_To) {
-		JSONObject object = new JSONObject();
-		UserEntity.savepost(post,Post_To);
-
-		object.put("status", " success");
-		// System.out.print(uemail);
-		// object.put("status", "accept");
-		return object.toString();
-
-	}
-	
-	@POST
-	@Path("/createpageService")
-	public String createpageService (@FormParam("pageName") String pageName,
-	@FormParam("pageID") String pageID,
-	@FormParam("pageType") String pageType,
-	@FormParam("pagePrivacy") String pagePrivacy) {
-		JSONObject object = new JSONObject();
-		UserEntity.savepage(pageName,pageID,pageType,pagePrivacy);
-
-		object.put("status", " success");
-		// System.out.print(uemail);
-		// object.put("status", "accept");
-		return object.toString();
-
-	}
-	
-	
-	//----------------------------------------------------
-	/*
-	 * @POST
-	 * 
-	 * @Path("/messageService") public String
-	 * messageService(@FormParam("Sender") String Sender,
-	 * 
-	 * @FormParam("Reciever") String Reciever, @FormParam("message") String
-	 * message) { UserEntity user2 = new UserEntity(Sender, Reciever, message);
-	 * user2.savemessage(); JSONObject object = new JSONObject();
-	 * object.put("message", "OK"); return object.toString(); }
-	 */
-
-	// -----------------------------------------------------------------------------------------------------------
-	/*
-	 * @POST
-	 * 
-	 * @Path("/Groupmessageservice") public String
-	 * Groupmessageservice(@FormParam("Sender") String Sender,
-	 * 
-	 * @FormParam("Groupid") String Groupid, @FormParam("message") String
-	 * message) { System.out.println(message); UserEntity user2 = new
-	 * UserEntity(Sender, Groupid, message); user2.savemessage(); JSONObject
-	 * object = new JSONObject(); object.put("Status", "OK"); return
-	 * object.toString(); }
-	 */
-	// ---------------------------------------------------
-	/*
-	 * @POST
-	 * 
-	 * @Path("/GroupmessageService") public String
-	 * GroupmessageService(@FormParam("Sender") String Sender,
-	 * 
-	 * @FormParam("Groupid") String Groupid, @FormParam("message") String
-	 * message) { UserEntity user2 = new UserEntity(Sender, Groupid, message);
-	 * user2.saveGroupmessage(); JSONObject object = new JSONObject();
-	 * object.put("Status", "OK"); return object.toString(); }
-	 */
+		}
 
 	
-	@POST
-	@Path("/likepageService")
-	public String likepageService(@FormParam("p") String p) {
-		JSONObject object = new JSONObject();
-		UserEntity.like(p);
+	
+	
 
-		object.put("status", " accept");
-		return object.toString();
-	}
-	@POST
-	@Path("/EnterPageService")
-	public String EnterPageService(@FormParam("p") String p) {
-		JSONObject object = new JSONObject();
-		UserEntity.Enter(p);
+	
+	
 
-		object.put("status", " accept");
-		return object.toString();
-	}
-	
-	
-	@POST
-	@Path("/TimelinePostService")
-	public String TimelinePostService(@FormParam("PostType") String PostType , @FormParam("TimelineName") String TimelineName
-			,@FormParam("Post") String Post
-			,@FormParam("Feeling")String Feeling
-			,@FormParam("Privacy") String Privacy ) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		JSONObject object = new JSONObject();
-		//Builder b =new Builder();
-		//b.checkType (PostType);
-		UserEntity.createTimelinePost(PostType,TimelineName,Post,Feeling,Privacy);
-		//Builder b =new Builder();
-		//b.checkType (PostType);
-		object.put("status", " accept");
-		return object.toString();
-	}
-	
-	@POST
-	@Path("/PageService")
-	public String PageService(@FormParam("PostType") String PostType , @FormParam("TimelineName") String TimelineName
-			,@FormParam("Post") String Post
-			,@FormParam("Feeling")String Feeling
-			,@FormParam("Privacy") String Privacy ) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		JSONObject object = new JSONObject();
-		//Builder b =new Builder();
-		//b.checkType (PostType);
-		UserEntity.createTimelinePost(PostType,TimelineName,Post,Feeling,Privacy);
-		//Builder b =new Builder();
-		//b.checkType (PostType);
-		object.put("status", " accept");
-		return object.toString();
-	}
-	
-	@POST
-	@Path("/HashtagService")
-	public String HashtagService(@FormParam("Hashtag") String Hashtag ,@FormParam("Post") String Post) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		JSONObject object = new JSONObject();
-		
-		UserEntity.createHashtagPost(Hashtag,Post);
-		
-		object.put("status", " accept");
-		return object.toString();
-	}
-	
-	@POST
-	@Path("/HashtagcountService")
-	public String HashtagService(@FormParam("Hashtag") String Hashtag ) {
-		JSONObject object = new JSONObject();
-		
-		UserEntity.countHashtagPost(Hashtag);
-		
-		object.put("status", " accept");
-		return object.toString();
-	}
 	
 	
 }
